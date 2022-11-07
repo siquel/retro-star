@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "------------- run -------------": "use these to actually run the project",
-    "start": "ts-node src/index.ts",
+    "start": "node --max-old-space-size=140 -r ts-node/register/transpile-only ./src/index.ts",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "------------- test -------------": "test commands",
     "test": "jest",
