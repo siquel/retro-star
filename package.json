@@ -12,6 +12,8 @@
     "test:unit": "jest --selectProjects unit",
     "test:unit-ci": "jest --selectProjects unit",
     "test:integration": "jest --selectProjects integration",
+    "------------- scheduling -------------------------": "scheduled jobs",
+    "cron:huuto": "node --max-old-space-size=140 -r ts-node/register/transpile-only ./src/hello.ts",
     "------------- linting & typechecking -------------": "commands to check our code with linters or typecheckers",
     "fmt": "npm run lint:fix",
     "lint": "npm run prettier && npm run tsc:check && npm run eslint",
