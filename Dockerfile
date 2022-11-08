@@ -6,10 +6,10 @@ EXPOSE 3000
 COPY package.json package-lock.json ./
 RUN npm ci
 
+COPY . .
+
 ARG GIT_COMMIT
 ENV GIT_COMMIT ${GIT_COMMIT}
-
-COPY . .
 
 FROM dependencies as production
 
