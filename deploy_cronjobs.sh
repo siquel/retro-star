@@ -15,5 +15,5 @@ if [ -z "$huuto" ]; then
   exit 1
 fi
 
-fly machines update "$huuto" -a retro-star-scheduled --schedule hourly --image "registry.fly.io/retro-star:$SHA"
+flyctl machines update "$huuto" -a retro-star-scheduled --schedule hourly --image "registry.fly.io/retro-star:$SHA"
 
