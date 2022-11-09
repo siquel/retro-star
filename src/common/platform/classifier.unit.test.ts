@@ -3,7 +3,7 @@ import { Platform, tryExtractPlatform } from './classifier'
 describe('Classifier', () => {
   it.each`
     source                                                           | expected
-    ${"Nintendo 64 : Yoshi's Story - N64"}                           | ${Platform.Nintendo64}
+    ${"Nintendo 64: Yoshi's Story - N64"}                            | ${Platform.Nintendo64}
     ${'Gradius NES'}                                                 | ${Platform.NES}
     ${'World Cup 98 Nintendo 64'}                                    | ${Platform.Nintendo64}
     ${'Carmageddon Nintendo 64 N64'}                                 | ${Platform.Nintendo64}
@@ -28,7 +28,7 @@ describe('Classifier', () => {
     ${'wii usa is a platform'}                                       | ${Platform.NintendoWii}
     ${'[NGC] Frogger Beyond'}                                        | ${Platform.NintendoGamecube}
     ${'Castlevania 3 NES!'}                                          | ${Platform.NES}
-  `('extracts platform from $source to be $expected', ({ source, expected }) => {
+  `('extracts platform from "$source" to be $expected', ({ source, expected }) => {
     expect(tryExtractPlatform(source)).toBe(expected)
   })
 })
