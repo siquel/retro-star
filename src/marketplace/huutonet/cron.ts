@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 
-import { getSoldListings } from './huutonet.api'
 import { tryExtractPlatform } from '../../common/platform/classifier'
+import { getSoldListings } from './huutonet.api'
 ;(async () => {
   const response = await getSoldListings({
     category: 457, // nintendo-pelit
@@ -11,7 +11,7 @@ import { tryExtractPlatform } from '../../common/platform/classifier'
     page: 1,
   })()
   if (E.isRight(response)) {
-    response.right.data.items
+    response.right.items
       .map(
         (item) =>
           `${item.title}: Sold for ${item.currentPrice}€ - ${item.links.alternative} - Platform: ${tryExtractPlatform(

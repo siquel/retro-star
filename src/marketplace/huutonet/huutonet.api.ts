@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either'
 import * as F from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 import * as t from 'io-ts'
+import { DateFromISOString } from 'io-ts-types/lib/DateFromISOString'
 
 const API_BASE_URL = 'https://api.huuto.net/1.1'
 
@@ -13,6 +14,8 @@ const huutoItem = t.type({
   sellerId: t.number,
   currentPrice: t.number, // major units
   bidderCount: t.number,
+  closingTime: DateFromISOString,
+  listTime: DateFromISOString,
   links: t.type({
     self: t.string, // https://api.huuto.net/1.1/items/<item id>
     category: t.string, // https://api.huuto.net/1.1/categories/<category id>,
@@ -22,7 +25,7 @@ const huutoItem = t.type({
 })
 const itemsHttpResponse = t.type({
   totalCount: t.number, // item count perhaps?
-  updated: t.string, // datetime
+  updated: DateFromISOString,
   links: t.type({
     next: t.union([t.null, t.string]),
     first: t.union([t.null, t.string]),
@@ -73,18 +76,10 @@ export const getSoldListings = (filter: Omit<ItemsFilter, 'status'> = {}) => {
     status: 'closed',
   }
 
-  const closedOnly = (items: t.TypeOf<typeof huutoItem>[]) => items.filter((item) => item.bidderCount >= 1)
+  const havingBidders = (items: t.TypeOf<typeof huutoItem>[]) => items.filter((item) => item.bidderCount >= 1)
 
   return F.pipe(
     getItems(params),
-    TE.chain((res) =>
-      TE.right({
-        ...res,
-        data: {
-          ...res.data,
-          items: closedOnly(res.data.items),
-        },
-      }),
-    ),
+    TE.chainW((res) => TE.right({ ...res.data, items: havingBidders(res.data.items) })),
   )
 }
