@@ -41,6 +41,7 @@ describe('NES game classifier', () => {
     ${'zelda II'}                               | ${'Zelda II: The Adventure of Link'}
     ${'short order'}                            | ${'Short Order/Eggsplode'}
     ${'eggsplode'}                              | ${'Short Order/Eggsplode'}
+    ${'ohjain'}                                 | ${undefined}
   `('returns "$expectedTitle" from "$input"', ({ input, expectedTitle }) => {
     expect(tryExtractGame(input)?.title).toBe(expectedTitle)
   })

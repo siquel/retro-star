@@ -28,6 +28,7 @@ describe('Classifier', () => {
     ${'wii usa is a platform'}                                       | ${Platform.NintendoWii}
     ${'[NGC] Frogger Beyond'}                                        | ${Platform.NintendoGamecube}
     ${'Castlevania 3 NES!'}                                          | ${Platform.NES}
+    ${'Nintendo Scope 6 - Super Nes'}                                | ${Platform.SNES}
   `('extracts platform from "$source" to be $expected', ({ source, expected }) => {
     expect(tryExtractPlatform(source)).toBe(expected)
   })

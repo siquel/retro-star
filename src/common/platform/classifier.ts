@@ -8,8 +8,8 @@ export enum Platform {
   Unknown = 'Unknown',
 }
 
-const NES_RE = /(\bNintendo 8-?bit\b|\bNES\b|\bNintendo Entertaiment System\b)/i
-const SNES_RE = /(\bSNES\b|\bSuper Nintendo\b)/i
+const NES_RE = /(\bNintendo 8-?bit\b|\b(?<!super\s*)NES\b|\bNintendo Entertaiment System\b)/i
+const SNES_RE = /(\bSNES\b|\bSuper Nintendo\b|\bsuper nes\b)/i
 const N64_RE = /(\bN64\b|\bNintendo\b \b64\b)/i
 const GC_RE = /(\bNGC\b|\bGamecube\b)/i
 // Note: negative lookahead match wii not followed by \s*U
