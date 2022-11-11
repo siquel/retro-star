@@ -9,18 +9,27 @@ const NES_REGION_CODE_REGEX = new RegExp(
   `asian version|(?:${Object.keys(NES_REGION_CODES).join('|')})\/?(?:${Object.keys(NES_REGION_CODES).join('|')})?`,
   'gi',
 )
-const COMPLETENESS_REGEX = /(?:\bCIB|loose|boxed\b)|\((?:L|B|LM)\)/gi
-const REGION_METADATA_REGEX = /\b(?:pal(?:[- ][ab])?|NTSC|USA|yapon)\b/gi
+const COMPLETENESS_REGEX = /(?:\bCIB|loose|boxed\b)|\(\s*(?:L|B|LM)\s*\)|ei ohjeita/gi
+const REGION_METADATA_REGEX = /\b(?:pal(?:[- ][ab])?|NTSC|USA|yapon(?:-\w+)?)\b/gi
 const NES_RE = /(\bNintendo 8-?bit\b|\bnintendo NES\b|\bNES\b|\bNintendo Entertaiment System\b)/gi
 
+const TRANSLATE = {
+  ohjain: 'controller',
+  pölysuoja: 'dust cover',
+}
+
 const sanitize = (input: string) => {
-  let sanitized = input.replace(NES_REGION_CODE_REGEX, '')
+  let sanitized = input.replace(COMPLETENESS_REGEX, '')
   sanitized = sanitized.replace(NES_RE, '')
-  sanitized = sanitized.replace(COMPLETENESS_REGEX, '')
+  sanitized = sanitized.replace(NES_REGION_CODE_REGEX, '')
   sanitized = sanitized.replace(REGION_METADATA_REGEX, '')
+  sanitized = Object.entries(TRANSLATE).reduce(
+    (agg, [what, to]) => agg.replace(new RegExp(`${what}`, 'ig'), to),
+    sanitized,
+  )
   sanitized = sanitized.replace(/[`~!@#$%^&*()_|+=?;,:<>{}\[\]\\]/gi, '')
   sanitized = sanitized.replace(/-(?=\s)/g, '')
-  return sanitized.replace(/\s+/, ' ').trim()
+  return sanitized.replace(/\s+/g, ' ').trim()
 }
 
 ;(async () => {
