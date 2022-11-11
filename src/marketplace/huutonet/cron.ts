@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either'
 import { Platform, tryExtractPlatform } from '../../common/platform/classifier'
 import { getSoldListings } from './huutonet.api'
 import { NES_REGION_CODES } from '../../common/platform/nes/region'
-import { tryExtractGame } from '../../common/platform/nes/classifier'
+import { tryIdentifyProduct } from '../../common/platform/nes/classifier'
 
 const NES_REGION_CODE_REGEX = new RegExp(
   `asian version|(?:${Object.keys(NES_REGION_CODES).join('|')})\/?(?:${Object.keys(NES_REGION_CODES).join('|')})?`,
@@ -49,7 +49,7 @@ const sanitize = (input: string) => {
       //     )}`,
       // )
       .filter((item) => tryExtractPlatform(item.title) === Platform.NES)
-      .map((item) => ({ ...item, identified: tryExtractGame(sanitize(item.title))?.title }))
+      .map((item) => ({ ...item, identified: tryIdentifyProduct(sanitize(item.title))?.title }))
       .map((item) => ({
         ...item,
         identified: item.identified ? `\x1b[32m${item.identified}\x1b[0m` : '\x1b[31mNOTHING\x1b[0m',

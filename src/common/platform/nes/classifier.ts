@@ -12,7 +12,7 @@ const fuse = new Fuse(getNesGames().concat(getNesAccessories()), {
   minMatchCharLength: 3,
 })
 
-export const tryExtractGame = (searchString: string) => {
+export const tryIdentifyProduct = (searchString: string) => {
   if (searchString === null) return undefined
 
   const search = fuse.search(searchString)

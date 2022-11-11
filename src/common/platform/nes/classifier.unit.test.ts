@@ -1,4 +1,4 @@
-import { tryExtractGame } from './classifier'
+import { tryIdentifyProduct } from './classifier'
 
 describe('NES game classifier', () => {
   it.each`
@@ -52,6 +52,6 @@ describe('NES game classifier', () => {
     ${'Action 52'}                              | ${'Action 52'}
     ${'Super Spoke V’Ball'}                     | ${"Super Spike V'Ball"}
   `('returns "$expectedTitle" from "$input"', ({ input, expectedTitle }) => {
-    expect(tryExtractGame(input)?.title).toBe(expectedTitle)
+    expect(tryIdentifyProduct(input)?.title).toBe(expectedTitle)
   })
 })
