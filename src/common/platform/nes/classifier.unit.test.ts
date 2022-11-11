@@ -42,6 +42,15 @@ describe('NES game classifier', () => {
     ${'short order'}                            | ${'Short Order/Eggsplode'}
     ${'eggsplode'}                              | ${'Short Order/Eggsplode'}
     ${'ohjain'}                                 | ${undefined}
+    ${'soltice'}                                | ${'Solstice: The Quest for the Staff of Demnos'}
+    ${'starsoldier'}                            | ${'Star Soldier'}
+    ${'flintstones'}                            | ${'The Flintstones: The Rescue of Dino & Hoppy'}
+    ${'flintstones surprise'}                   | ${'The Flintstones: Surprise at Dinosaur Peak'}
+    ${''}                                       | ${undefined}
+    ${'       '}                                | ${undefined}
+    ${null}                                     | ${undefined}
+    ${'Action 52'}                              | ${'Action 52'}
+    ${'Super Spoke V’Ball'}                     | ${"Super Spike V'Ball"}
   `('returns "$expectedTitle" from "$input"', ({ input, expectedTitle }) => {
     expect(tryExtractGame(input)?.title).toBe(expectedTitle)
   })
