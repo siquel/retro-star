@@ -25,6 +25,6 @@
     "noUncheckedIndexedAccess": false,
     "strictPropertyInitialization": false
   },
-  "include": ["./src", "jest/**/*"],
+  "include": ["./src", "jest/**/*", "*.ts", "migrations/**.ts"],
   "exclude": ["node_modules"]
 }

@@ -5,6 +5,9 @@ processes = []
 
 [env]
 
+[deploy]
+  release_command = "npm run migrate"
+
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
