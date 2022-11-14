@@ -2,7 +2,10 @@ import request from 'supertest'
 
 import { createServer } from './server'
 
-const app = createServer()
+let app: Awaited<ReturnType<typeof createServer>>
+beforeAll(async () => {
+  app = await createServer()
+})
 
 describe('server', () => {
   it('serves health', async () => {

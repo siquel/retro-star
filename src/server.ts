@@ -1,13 +1,14 @@
 import express, { Express, Request, Response } from 'express'
-import { createPool, createSqlTag } from 'slonik'
+import { createSqlTag } from 'slonik'
 import z from 'zod'
 
 import { config } from './config'
+import { createPool } from './db'
 
 export const createServer = async () => {
   const app: Express = express()
 
-  const pool = await createPool(config.database.url)
+  const pool = await createPool(config.database)
   const sql = createSqlTag({
     typeAliases: {
       id: z.object({

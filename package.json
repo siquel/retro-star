@@ -47,7 +47,8 @@
     "fuse.js": "^6.6.2",
     "io-ts": "^2.2.19",
     "io-ts-types": "^0.5.19",
-    "slonik": "^33.0.2"
+    "slonik": "^33.0.2",
+    "slonik-interceptor-field-name-transformation": "^1.6.5"
   },
   "devDependencies": {
     "@relmify/jest-fp-ts": "^2.0.2",
