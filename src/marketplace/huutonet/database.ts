@@ -1,6 +1,22 @@
 import { DatabaseConnection, DatabaseTransactionConnection, sql } from 'slonik'
 import z from 'zod'
 
+const EVENT_TABLE = sql.identifier(['huuto_net_raw_sold_events'])
+
+const dateFromUnix = z.number().transform((unix) => new Date(unix))
+
+const huutoItem = z.object({
+  id: z.number(),
+  huutoId: z.string(),
+  soldWithAmount: z.number(),
+  soldWithCurrency: z.string(),
+  soldAt: dateFromUnix,
+  listedAt: dateFromUnix,
+  listingTitle: z.string(),
+  listingDescription: z.string(),
+  metadata: z.record(z.unknown()),
+})
+
 type HuutoSoldListing = Omit<z.infer<typeof huutoItem>, 'id'>
 
 export const create = (conn: DatabaseConnection | DatabaseTransactionConnection, items: HuutoSoldListing[]) => {
@@ -16,7 +32,7 @@ export const create = (conn: DatabaseConnection | DatabaseTransactionConnection,
   ]
 
   return conn.query(sql.unsafe`
-  INSERT INTO huuto_net_raw_sold_events(
+  INSERT INTO ${EVENT_TABLE}(
       huuto_id,
       sold_with_amount,
       sold_with_currency,
@@ -34,23 +50,25 @@ export const create = (conn: DatabaseConnection | DatabaseTransactionConnection,
   `)
 }
 
-const dateFromUnix = z.number().transform((unix) => new Date(unix))
-
-const huutoItem = z.object({
-  id: z.number(),
-  huutoId: z.string(),
-  soldWithAmount: z.number(),
-  soldWithCurrency: z.string(),
-  soldAt: dateFromUnix,
-  listedAt: dateFromUnix,
-  listingTitle: z.string(),
-  listingDescription: z.string(),
-  metadata: z.record(z.unknown()),
-})
-
 export const findAll = async (conn: DatabaseConnection | DatabaseTransactionConnection) => {
   return conn.many(sql.type(huutoItem)`
   SELECT *
-  FROM huuto_net_raw_sold_events
+  FROM ${EVENT_TABLE}
+  `)
+}
+
+/**
+ * Find the highest sold at timestamp.
+ *
+ * @param conn The database connections
+ * @returns Date Highest sold at timestamp or epoch if table is empty.
+ */
+export const findHighestSoldAt = async (conn: DatabaseConnection | DatabaseTransactionConnection) => {
+  const maxObject = z.object({ max: dateFromUnix })
+  const EPOCH = new Date(0)
+
+  return conn.oneFirst(sql.type(maxObject)`
+  SELECT COALESCE(MAX(sold_at), ${sql.timestamp(EPOCH)}) as max
+  FROM ${EVENT_TABLE}
   `)
 }
